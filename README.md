@@ -1,7 +1,7 @@
 # Chap App
 This is a simple realtime chat application developed with socket.io framework and node.js
 
-Live Link: [https://simp-chatapp.herokuapp.com/](Simp-ChatApp)
+Live Link: [Simp-ChatApp](https://simp-chatapp.herokuapp.com/)
 
 ## Usage
 
