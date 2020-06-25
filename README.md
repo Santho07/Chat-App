@@ -10,3 +10,10 @@ Live Link: [Simp-ChatApp](https://simp-chatapp.herokuapp.com/)
  3. Hit join
 
 You can create your own room or join your friends room by the room name.
+
+## Screenshot
+Here is an screenshot of the app. 
+
+<p align="center">
+  <img src="screenshot.png">
+</p>
