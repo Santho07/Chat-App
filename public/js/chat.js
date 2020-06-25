@@ -12,6 +12,31 @@ const sideBarTemplate = document.querySelector('#sidebar-template').innerHTML
 // Options
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
 
+
+const autoscroll = () => {
+  
+  // New messages element
+  const $newMessage = $messages.lastElementChild
+  
+  // height of the new message
+  const newMessageStyles = getComputedStyle($newMessage)
+  const newMessageMargin = parseInt(newMessageStyles.marginBottom)
+  const newMessageHeight = $newMessage.offsetHeight + newMessageMargin
+
+  //visible height
+  const visibleHeight = $messages.offsetHeight
+
+  //height of messages container
+  const containerHeight = $messages.scrollHeight
+
+  //How far have I scrolled? 
+  const scrollOffset = $messages.scrollTop + visibleHeight
+
+  if (containerHeight - newMessageHeight <= scrollOffset) {
+    $messages.scrollTop = $messages.scrollHeight
+  }
+}
+
 socket.on('message', message => {
   const html = Mustache.render(messageTemplate, {
     sender: message.sender,
@@ -19,12 +44,21 @@ socket.on('message', message => {
     createdAt: moment(message.createdAt).format('h:mm a'),
   })
   $messages.insertAdjacentHTML('beforeend', html)
+  document.querySelectorAll('.message__name').forEach(e => {
+    if (e.textContent == username) {
+      e.style.color = 'blue'
+    }
+    if (e.textContent == 'System') {
+      e.style.color = 'red'
+    }
+  })
+  autoscroll()
 })
 
 socket.on('roomData', ({ room, users }) => {
-  console.log(sideBarTemplate)
   const html = Mustache.render(sideBarTemplate, { room, users })
   document.querySelector('#sidebar').innerHTML = html
+  document.getElementById(`${username}`).style.color = 'cyan' //color current username 
 })
 
 socket.on('locationMessage', message => {
@@ -34,6 +68,17 @@ socket.on('locationMessage', message => {
     createdAt: moment(message.createdAt).format('h:mm a'),
   })
   $messages.insertAdjacentHTML('beforeend', html)
+  
+  //color names
+  document.querySelectorAll('.message__name').forEach(e => {
+    if (e.textContent == username) {
+      e.style.color = 'blue'
+    }
+    if (e.textContent == 'System') {
+      e.style.color = 'red'
+    }
+  })
+  autoscroll()
 })
 
 $messageForm.addEventListener('submit', e => {
@@ -77,9 +122,8 @@ $sendLocationButton.addEventListener('click', () => {
   })
 })
 
-socket.emit('join', { username, room }, error => {
+socket.emit('join', {username, room }, error => {
   //socket.emit('sendMessage', message)
-
   if (error) {
     alert(error)
     location.href = '/'

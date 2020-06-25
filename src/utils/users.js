@@ -1,8 +1,15 @@
 const users = []
-
+String.prototype.toTitleCase = function () {
+  return this.toLowerCase()
+    .split(' ')
+    .map(function (word) {
+      return word[0].toUpperCase() + word.substr(1)
+    })
+    .join(' ')
+}
 const addUser = ({ id, username, room }) => {
-  username = username.trim().toLowerCase()
-  room = room.trim().toLowerCase()
+  username = username.trim().toTitleCase()
+  room = room.trim().toTitleCase()
   //validate wheather they are empty
   if (!username || !room) {
     return {
@@ -35,7 +42,7 @@ const getUser = id => {
   return user
 }
 const getUsersInRoom = room => {
-  return users.filter(user => user.room === room.toLowerCase())
+  return users.filter(user => user.room === room.toTitleCase())
 }
 module.exports = {
   addUser,

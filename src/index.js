@@ -12,14 +12,14 @@ app.use(morgan('dev'))
 const server = http.createServer(app)
 const io = socketio(server)
 
-const port = process.env.PORT || 3001
+const port = process.env.PORT || 3000
 const publicDirectoryPath = path.join(__dirname, '../public')
 app.use(express.static(publicDirectoryPath))
 
 io.on('connection', socket => {
   console.log('New Websocket Connection')
   socket.on('join', (options, callback) => {
-      const { error, user } = addUser({ id: socket.id, ...options })
+    const { error, user } = addUser({ id: socket.id, ...options })
       
     if (error) {
       return callback(error)
@@ -35,6 +35,7 @@ io.on('connection', socket => {
     })
     callback()
   })
+    
   socket.on('sendMessage', (message, callback) => {
     const filter = new Filter()
     if (filter.isProfane(message)) {

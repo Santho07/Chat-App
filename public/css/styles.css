@@ -58,6 +58,7 @@ button:disabled {
 
 /* Join Page Styles */
 
+
 .centered-form {
     background: #333744;
     width: 100vw;
@@ -180,4 +181,10 @@ button:disabled {
     list-style-type: none;
     font-weight: 300;
     padding: 12px 24px 0 24px;
+}
+a{
+  text-decoration: none;
+}
+a:hover, a:active {
+  color:red;
 }
